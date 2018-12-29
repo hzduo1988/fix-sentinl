@@ -1,0 +1,46 @@
+<form iname="watcherWizardEverySchedule.form" ng-model-options="{ getterSetter: true }" novalidate>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <input
+          class="form-control"
+          type="text"
+          ng-model="watcherWizardAddIndex.selected"
+          ng-model-options="{ debounce: 1500 }"
+          placeholder="Type index names here"
+          uib-typeahead="element.index for element in watcherWizardAddIndex.getIndexNames($viewValue)"
+          typeahead-loading="watcherWizardAddIndex.loadingLocations"
+          typeahead-no-results="watcherWizardAddIndex.noResults"
+          typeahead-on-select="watcherWizardAddIndex.handleChange($item, $model, $label, $event)"
+          typeahead-popup-template-url="customPopupTemplate"
+          ng-change="watcherWizardAddIndex.handleChange()"
+        >
+        <i ng-show="watcherWizardAddIndex.loadingLocations" class="glyphicon glyphicon-refresh"></i>
+        <div ng-show="watcherWizardAddIndex.noResults">
+          <i class="glyphicon glyphicon-remove"></i> No Results Found
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script type="text/ng-template" id="customPopupTemplate">
+  <ul
+      class="dropdown-menu"
+      ng-show="isOpen() && !moveInProgress"
+      ng-style="{top: position().top + 'px', left: position().left + 'px'}"
+      style="max-height: 400px; overflow-y: auto;"
+  >
+    <li
+        class="uib-typeahead-match"
+        ng-repeat="match in matches track by $index"
+        ng-class="{active: isActive($index) }"
+        ng-mouseenter="selectActive($index)"
+        ng-click="selectMatch($index, $event)"
+        role="option"
+        id="{{::match.id}}"
+    >
+      <div uib-typeahead-match index="$index" match="match" query="query" template-url="templateUrl"></div>
+    </li>
+  </ul>
+</script>
